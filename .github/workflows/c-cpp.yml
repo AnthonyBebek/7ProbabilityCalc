@@ -1,23 +1,31 @@
-name: C/C++ CI
+name: C++ Build and Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+      # Step 1: Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up a C++ compiler
+      - name: Set up C++ Compiler
+        run: sudo apt-get install -y g++ make
+
+      # Step 3: Compile the code
+      - name: Build
+        run: |
+          g++ -o main main.cpp
+
+      # Step 4: Run the compiled program
+      - name: Run the program
+        run: ./main
