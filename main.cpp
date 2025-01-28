@@ -4,6 +4,7 @@
 #include <time.h>
 #include <list>
 #include <cstdint>
+#include <cstdlib>
 
 using namespace std;
 
@@ -44,10 +45,13 @@ int seven_prob_finder() {
     printf("Calculated Error: %.10f %%\n", (dom * count) - 100 * (1.0 / 7.0));
     
 
-    // Wait for user to interact with program before quitting
-    char temp = 'x';
-    while (temp != '\n')
-    cin.get(temp);
+    // Checks if running in a github action or else the test will just hang
+    if (std::getenv("CI") == nullptr) {
+        printf("Press Enter to quit...\n");
+        getchar();  // Wait for user input
+    } else {
+        printf("Running in CI, skipping user input.\n");
+    }
     return 0;
 }
 
